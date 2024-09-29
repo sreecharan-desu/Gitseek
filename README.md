@@ -1,50 +1,18 @@
-# React + TypeScript + Vite
+# 🔍 GitSeeker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**GitSeeker** is a powerful and intuitive GitHub profile searcher application that allows you to explore GitHub profiles, view detailed user information, and interact with repository data. Built with React, TypeScript, and Tailwind CSS, GitSeeker provides a seamless and dynamic search experience using the GitHub REST API.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔎 **Search GitHub Users**: Find GitHub users by their username or part of their name.
+- 📄 **View User Profiles**: Get detailed information about users, including bio, profile image, and more.
+- 📂 **Repository Information**: Explore user repositories with details such as description, stars, and language.
+- 👥 **Followers & Following**: View the list of followers and users followed by the searched profile.
+- 🚀 **Fast & Responsive**: Built with Vite, the app is optimized for quick performance and a smooth user experience.
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **Build Tool**: Vite
+- **API**: GitHub REST API
+- **Styling**: Tailwind CSS
