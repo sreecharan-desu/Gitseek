@@ -3,8 +3,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useRecoilState } from "recoil";
 import { usersAtom } from "../store";
 
-const GITHUB_ACCESS_TOKEN = import.meta.env.VITE_GITHUB_ACCESS_TOKEN;
-console.log(GITHUB_ACCESS_TOKEN);
+// const GITHUB_ACCESS_TOKEN = import.meta.env.VITE_GITHUB_ACCESS_TOKEN;
 
 export default function Search() {
     const [delim, setDelim] = useState("");
@@ -16,45 +15,39 @@ export default function Search() {
         setDelim(event.target.value);
     };
 
-    const debouncedValue = useDebounce(delim, 1000);
+    const debouncedValue = useDebounce(delim, 500);
 
-    useEffect(() => {
-        const getUsers = async (username: string) => {
-            if (!username) return;
-            setLoading(true);
+    const fetchUsers = async (username: string) => {
+        if (!username) return;
 
-            const res = await fetch(`https://api.github.com/search/users?q=${username}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
-                    Accept: "application/vnd.github.v3+json",
-                },
-            });
+        setLoading(true);
+        try {
+            const res = await fetch(`https://api.github.com/search/users?q=${username}`);
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error("GitHub API Error:", errorData);
+                return;
+            }
 
             const data = await res.json();
             setUsers(data.items || []);
             setCount(data.total_count || 0);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        } finally {
             setLoading(false);
-        };
+        }
+    };
 
-        getUsers(debouncedValue);
-    }, [debouncedValue, setUsers]);
+    useEffect(() => {
+        if (debouncedValue) {
+            fetchUsers(debouncedValue);
+        }
+    }, [debouncedValue]);
 
-    const onClickHandler = async () => {
-        setLoading(true);
-
-        const res = await fetch(`https://api.github.com/search/users?q=${debouncedValue}`, {
-            method: "GET",
-            headers: {
-                Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
-                Accept: "application/vnd.github.v3+json",
-            },
-        });
-
-        const data = await res.json();
-        setUsers(data.items || []);
-        setCount(data.total_count || 0);
-        setLoading(false);
+    const onClickHandler = () => {
+        fetchUsers(debouncedValue);
     };
 
     return (
@@ -64,6 +57,7 @@ export default function Search() {
                 <input
                     type="text"
                     onChange={onChangeHandler}
+                    value={delim}
                     className="w-full bg-[#161b22] text-white px-5 py-3 rounded-lg text-lg border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all outline-none shadow-md"
                     placeholder="🔍 Search GitHub users..."
                 />
@@ -89,8 +83,12 @@ export default function Search() {
                     <div className="w-64 h-6 bg-gray-700 animate-pulse rounded-md"></div>
                     <div className="w-48 h-6 bg-gray-700 animate-pulse rounded-md"></div>
                 </div>
+            ) : users && users.length === 0 && debouncedValue ? (
+                <p className="mt-6 text-gray-300 text-lg text-center">
+                    No users found for <b className="bg-gray-800 px-3 py-1 rounded-md">"{debouncedValue}"</b>
+                </p>
             ) : (
-                (users && users.length != 0) && (
+                users.length > 0 && (
                     <p className="mt-6 text-gray-300 text-lg text-center">
                         Found <span className="text-blue-400 font-bold">{totalCount}</span> users matching{" "}
                         <b className="bg-gray-800 px-3 py-1 rounded-md">"{debouncedValue}"</b>
