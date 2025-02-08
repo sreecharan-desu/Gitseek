@@ -3,7 +3,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { useRecoilState } from "recoil";
 import { usersAtom } from "../store";
 
-export const GITHUB_ACCESS_TOKEN = "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"; // Paste your token here
+const GITHUB_ACCESS_TOKEN = import.meta.env.VITE_GITHUB_ACCESS_TOKEN;
 
 export default function Search() {
     const [delim, setDelim] = useState("");
