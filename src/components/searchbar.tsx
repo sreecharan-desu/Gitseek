@@ -59,7 +59,7 @@ export default function Search() {
                     onChange={onChangeHandler}
                     value={delim}
                     className="w-full bg-[#161b22] text-white px-5 py-3 rounded-lg text-lg border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all outline-none shadow-md"
-                    placeholder="🔍 Search GitHub users..."
+                    placeholder="Search GitHub users..."
                 />
                 <button
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 transition-all p-3 rounded-full shadow-md"
