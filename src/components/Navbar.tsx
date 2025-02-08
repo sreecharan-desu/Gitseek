@@ -1,9 +1,10 @@
-export default function Navbar(){
-    return<>
-        <div className="flex justify-between w-full bg-[#010409] shadow-xl">
-            <div className="text-2xl first-letter:text-4xl lg:text-2xl text-[#f0f6dd] m-2 lg:first-letter:text-4xl" >
-                Gitseek
-            </div>
+export default function Navbar() {
+    return (
+      <div className="flex justify-between items-center w-full bg-[#010409]/80 backdrop-blur-md shadow-lg px-6 py-3 border-b border-gray-800">
+        <div className="text-3xl font-bold text-[#f0f6dd] tracking-wide transition-all duration-300 hover:text-[#58a6ff] hover:scale-105">
+          Git<span className="text-[#58a6ff]">seek</span>
         </div>
-    </>
-}
+      </div>
+    );
+  }
+  

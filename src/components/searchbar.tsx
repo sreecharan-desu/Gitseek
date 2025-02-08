@@ -1,73 +1,101 @@
-import { SetStateAction,useEffect,useState } from "react"
+import { SetStateAction, useEffect, useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useRecoilState } from "recoil";
 import { usersAtom } from "../store";
 
-export default function Search(){
-    const [delim,setDelim] = useState('');const [loading,setLoading] = useState(false);
-    const [users,setUsers] = useRecoilState(usersAtom);
-    const [totalCount,setCount] = useState(0);
-    const onChangeHandler = (event: { target: { value: SetStateAction<string>; }; })=>{
+export const GITHUB_ACCESS_TOKEN = "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"; // Paste your token here
+
+export default function Search() {
+    const [delim, setDelim] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useRecoilState(usersAtom);
+    const [totalCount, setCount] = useState(0);
+
+    const onChangeHandler = (event: { target: { value: SetStateAction<string> } }) => {
         setDelim(event.target.value);
-    }
-    const debouncedValue = useDebounce(delim,500);
-    useEffect(()=>{
-        const getUsers = async (username:string)=>{
+    };
+
+    const debouncedValue = useDebounce(delim, 1000);
+
+    useEffect(() => {
+        const getUsers = async (username: string) => {
+            if (!username) return;
             setLoading(true);
-            const res = await fetch(`https://api.github.com/search/users?q=${username}`,{
-                method : 'GET'
+
+            const res = await fetch(`https://api.github.com/search/users?q=${username}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
+                    Accept: "application/vnd.github.v3+json",
+                },
             });
+
             const data = await res.json();
-            console.log(data);
-            setUsers(data.items);
-            setCount(data.total_count);
+            setUsers(data.items || []);
+            setCount(data.total_count || 0);
             setLoading(false);
-        }
+        };
+
         getUsers(debouncedValue);
-    },[debouncedValue, setUsers])
+    }, [debouncedValue, setUsers]);
 
-    const onClickHandler= async()=>{
+    const onClickHandler = async () => {
         setLoading(true);
-        const res = await fetch(`https://api.github.com/search/users?q=${debouncedValue}`,{
-            method : 'GET'
+
+        const res = await fetch(`https://api.github.com/search/users?q=${debouncedValue}`, {
+            method: "GET",
+            headers: {
+                Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
+                Accept: "application/vnd.github.v3+json",
+            },
         });
+
         const data = await res.json();
-        console.log(data);
-        setUsers(data.items);
-        setCount(data.total_count);
+        setUsers(data.items || []);
+        setCount(data.total_count || 0);
         setLoading(false);
-    }
+    };
 
-    return<>
-    <div className="flex-col justify-center">
-    <div className="m-3 flex justify-between text-left">
-            <input type="text" onChange={onChangeHandler} className="w-full px-20 py-1 lg:py-1 lg:pr-40 pl-3 rounded-xl text-xl" placeholder="Search by username"/>
-            <button className="bg-white m-1 rounded-xl hover:shadow-lg hover:bg-slate-500 transition-all  px-2 py-2" onClick={onClickHandler}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6 hover:text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-            </button>
+    return (
+        <div className="flex flex-col items-center justify-center p-6">
+            {/* Search Bar */}
+            <div className="relative w-full max-w-xl">
+                <input
+                    type="text"
+                    onChange={onChangeHandler}
+                    className="w-full bg-[#161b22] text-white px-5 py-3 rounded-lg text-lg border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all outline-none shadow-md"
+                    placeholder="🔍 Search GitHub users..."
+                />
+                <button
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 transition-all p-3 rounded-full shadow-md"
+                    onClick={onClickHandler}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="white"
+                        className="w-6 h-6"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+            </div>
+
+            {loading ? (
+                <div className="mt-6 flex flex-col items-center space-y-4">
+                    <div className="w-64 h-6 bg-gray-700 animate-pulse rounded-md"></div>
+                    <div className="w-48 h-6 bg-gray-700 animate-pulse rounded-md"></div>
+                </div>
+            ) : (
+                (users && users.length != 0) && (
+                    <p className="mt-6 text-gray-300 text-lg text-center">
+                        Found <span className="text-blue-400 font-bold">{totalCount}</span> users matching{" "}
+                        <b className="bg-gray-800 px-3 py-1 rounded-md">"{debouncedValue}"</b>
+                    </p>
+                )
+            )}
         </div>
-        {
-        (!users) ?<>
-            {loading ?<>
-                Loading...
-            </> : <>
-                
-            </>}
-        </> : 
-        <>
-        {loading ? 
-        <>
-            Loading...
-        </> : 
-        <>
-            <p className="m-3 text-white text-center">
-                Found {totalCount} results matching <b className="bg-slate-900 rounded-md p-1">`{debouncedValue}`</b>
-            </p>
-        </>}
-
-        </>}
-    </div>
-    </>
+    );
 }
