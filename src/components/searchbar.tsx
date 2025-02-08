@@ -44,7 +44,7 @@ export default function Search() {
         if (debouncedValue) {
             fetchUsers(debouncedValue);
         }
-    }, []);
+    }, [debouncedValue]);
 
     const onClickHandler = () => {
         fetchUsers(debouncedValue);
