@@ -1,44 +1,48 @@
-import { userProps } from '../store'; // Import the userProps type from your store
-
-// Define the props type for the UserCard component
 type UserCardProps = {
-  user: userProps;
+  user: {
+    login: string;
+    id: number;
+    avatar_url: string;
+    html_url: string;
+    followers_url: string;
+    following_url: string;
+    gists_url: string;
+    starred_url: string;
+    subscriptions_url: string;
+    organizations_url: string;
+    events_url: string;
+    received_events_url: string;
+    repos_url: string;
+    type: string;
+    site_admin: boolean;
+  };
+  accessToken: string;
 };
 
-// Component definition without React.FC
-export default function UserCard({ user }: UserCardProps){
+export default function UserCard({ user }: UserCardProps) {
   return (
-    <div className="w-full m-3 max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="flex items-center p-4">
-        {/* Avatar */}
-        <img
-          src={user.avatar_url}
-          alt={user.login}
-          className="h-16 w-16 rounded-full border-2 border-gray-300 mr-4"
-        />
-
-        {/* User Info */}
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800">{user.login}</h3>
-          <p className="text-gray-600 text-sm">ID: {user.id}</p>
-          <a
-            href={user.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline text-sm"
-          >
-            View Profile
-          </a>
+    <div className="w-full max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all p-6">
+      {/* Minimal View */}
+      <a
+        href={user.html_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:bg-gray-900 transition-colors duration-300"
+      >
+        <div className="flex items-center gap-4 mb-4">
+          <img
+            src={user.avatar_url}
+            alt={user.login}
+            className="h-20 w-20 rounded-full border-4 border-gray-500 transition-all transform hover:scale-105"
+          />
+          <div>
+            <h3 className="text-2xl font-semibold text-white">{user.login}</h3>
+            <p className="text-gray-400 text-sm">GitHub ID: {user.id}</p>
+            <p className="text-gray-300 text-xs">Type: {user.type} {user.site_admin && "(Admin)"}</p>
+          </div>
         </div>
-      </div>
 
-      {/* Additional Info */}
-      {/* <div className="bg-gray-50 px-4 py-3">
-        <p className="text-sm text-gray-500">Type: {user.type}</p>
-        <p className="text-sm text-gray-500">Score: {user.score}</p>
-        <div className="flex justify-between mt-3">
-        </div>
-      </div> */}
+      </a>
     </div>
   );
-};
+}
