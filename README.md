@@ -16,3 +16,7 @@
 - **Build Tool**: Vite
 - **API**: GitHub REST API
 - **Styling**: Tailwind CSS
+
+
+## Consistency & Discipline
+This project is maintained regularly to ensure documentation clarity and code quality. Small, daily improvements are prioritized over large, infrequent updates.
