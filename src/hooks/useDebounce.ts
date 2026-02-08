@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 
+/**
+ * useDebounce utility.
+ */
 export const useDebounce = (delim:string,timer : number)=>{
     const [debounce,setDebounce] = useState('');
     useEffect(()=>{
