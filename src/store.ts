@@ -21,6 +21,9 @@ export type userProps = {
     score: number;
 }
 
+/**
+ * usersAtom utility.
+ */
 export const usersAtom = atom<userProps[]>({
     key : 'UsersAtom',
     default : []
