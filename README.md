@@ -1,22 +1,26 @@
-# GitSeeker
+# git-seek
 
-**GitSeeker** is a powerful and intuitive GitHub profile searcher application that allows you to explore GitHub profiles, view detailed user information, and interact with repository data. Built with React, TypeScript, and Tailwind CSS, GitSeeker provides a seamless and dynamic search experience using the GitHub REST API.
+search github users and browse their profile, repositories, followers and following.
 
-## Features
+## features
 
-- **Search GitHub Users**: Find GitHub users by their username or part of their name.
-- **View User Profiles**: Get detailed information about users, including bio, profile image, and more.
-- **Repository Information**: Explore user repositories with details such as description, stars, and language.
-- **Followers & Following**: View the list of followers and users followed by the searched profile.
-- **Fast & Responsive**: Built with Vite, the app is optimized for quick performance and a smooth user experience.
+- search users by username
+- profile details: bio, avatar and stats
+- repositories with description, stars and language
+- followers and following lists
 
-## Technologies Used
+## stack
 
-- **Frontend**: React, TypeScript, Tailwind CSS
-- **Build Tool**: Vite
-- **API**: GitHub REST API
-- **Styling**: Tailwind CSS
+react 18 · vite · typescript · recoil · tailwind css · framer motion · github rest api
 
+## run locally
 
-## Consistency & Discipline
-This project is maintained regularly to ensure documentation clarity and code quality. Small, daily improvements are prioritized over large, infrequent updates.
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+## env
+
+copy `.env.example` to `.env`. `VITE_GITHUB_ACCESS_TOKEN` is optional and only raises the github api rate limit. it ends up in the browser bundle, so use a token with no scopes.
